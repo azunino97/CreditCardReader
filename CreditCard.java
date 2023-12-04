@@ -10,17 +10,22 @@
 public class CreditCard {
       private String cardNumber;
       private String cardHolderName;
+      private String cardType;
 
-      CreditCard(String num, String name) {
+      public CreditCard(String num, String name, String type) {
         cardNumber = num;
         cardHolderName = name;
+        cardType = type;
       }
 
       public String getName() { return cardHolderName; }
       public String getNumber() { return cardNumber; }
+      public String getType() { return cardType; }
 
-      public static void printCard(CreditCard card) { 
-        System.out.println("Number = " + card.getNumber());
-        System.out.println("Name = " + card.getName());
+      public void printCard() { 
+        System.out.print("cardNumber," + getNumber());
+        System.out.print(", cardHolderName," + getName());
+        System.out.println(", cardType," + getType());
       }
 }
+
