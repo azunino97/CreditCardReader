@@ -47,13 +47,8 @@ class Main {
 		return cardType;
 	}
 
-	public static void main(String[] args) {
-		// String inputNameCsv =
-		// "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
-		// String outputNameCsv =
-		// "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.csv";
-		String inputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.xml";
-		String outputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.xml";
+	public static Vector<CreditCard> getCreditCardsXml(String inputXmlPath, String cardNum) {
+		Vector<CreditCard> cards = new Vector<CreditCard>();
 		try {
 			File inputXmlFile = new File(inputXmlPath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -61,55 +56,74 @@ class Main {
 			Document doc = dBuilder.parse(inputXmlFile);
 			doc.getDocumentElement().normalize();
 			NodeList nList = doc.getElementsByTagName("CARD");
-			Vector<CreditCard> cards = new Vector<CreditCard>();
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
 					String cardNumber = eElement.getElementsByTagName("CARD_NUMBER").item(0).getTextContent();
 					String cardHolderName = eElement.getElementsByTagName("CARD_HOLDER_NAME").item(0).getTextContent();
-					// System.out.println("\ncardNumber: " + cardNumber);
-					// System.out.println("cardHolderName: " + cardHolderName);
-
-			/*
-			 * BufferedReader br = new BufferedReader(new FileReader(inputNameCsv));
-			 * BufferedWriter bw = new BufferedWriter(new FileWriter(outputNameCsv));
-			 * bw.write("cardNumber, cardType\n");
-			 * // read csv
-			 * String line;
-			 * int skipLines = 0;
-			 * Vector<CreditCard> cards = new Vector<CreditCard>();
-			 * while ((line = br.readLine()) != null) {
-			 * if (skipLines++ == 0)
-			 * continue;
-			 * String[] cCard = line.split(","); // input file lines: cardNumber[0],
-			 * expirationDate[1], cardHolderName[2]
-			 * String cardNumber = cCard[0];
-			 * String cardHolderName = cCard[2];
-			 */
-
-					// Validate cardNumber
 					String cardType = validateCard(cardNumber);
-					
-					// Create new subclass credit card
-					if (cardType == "MasterCard") cards.add(new MasterCard(cardNumber, cardHolderName, cardType));
-					else if (cardType == "Visa") cards.add(new Visa(cardNumber, cardHolderName, cardType));
-					else if (cardType == "AmericanExpress") cards.add(new AmericanExpress(cardNumber, cardHolderName, cardType));
-					else if (cardType == "Discover") cards.add(new Discover(cardNumber, cardHolderName, cardType));
-					
-					// Add credit card to output file
-					// bw.write(cardNumber + "," + cardType + "\n");
+					cards.add(createCard(cardNumber, cardHolderName, cardType));
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cards;
+	}
+
+	public static Vector<CreditCard> getCreditCardsCsv(String inputCsvPath) {
+		Vector<CreditCard> cards = new Vector<CreditCard>();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(inputCsvPath));
+			// BufferedWriter bw = new BufferedWriter(new FileWriter(outputCsvPath));
+			// bw.write("cardNumber, cardType\n");
 			
-			for (CreditCard card : cards) {
-			card.printCard();
-			}
-			// br.close();
+			// read csv
+			String line;
+			int skipLines = 0;
+			while ((line = br.readLine()) != null) {
+				if (skipLines++ == 0)
+				continue;
+				String[] cCard = line.split(","); // input file lines: cardNumber[0], expirationDate[1], cardHolderName[2]
+				String cardNumber = cCard[0];
+				String cardHolderName = cCard[2];
+				String cardType = validateCard(cardNumber);
+				cards.add(createCard(cardNumber, cardHolderName, cardType));
+				// cards.add(new CreditCard(cardNumber, cardHolderName, ""));
+				// Add credit card to output file
+				// bw.write(cardNumber + "," + cardType + "\n");
+			}	
+
+			br.close();
 			// bw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return;
 		}
+		return cards;
+	}
+
+	public static CreditCard createCard(String cardNumber, String cardHolderName, String cardType) {
+		// Create new subclass credit card
+		CreditCard card = new CreditCard("", "", "");
+		if (cardType == "MasterCard") card = new MasterCard(cardNumber, cardHolderName, cardType);
+		else if (cardType == "Visa") card = new Visa(cardNumber, cardHolderName, cardType);
+		else if (cardType == "AmericanExpress") card = new AmericanExpress(cardNumber, cardHolderName, cardType);
+		else if (cardType == "Discover") card = new Discover(cardNumber, cardHolderName, cardType);
+		return card;
+	}
+
+	public static void main(String[] args) {
+		String inputNameCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
+		// String outputNameCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.csv";
+		// String inputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.xml";
+		// String outputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.xml";
+
+		Vector<CreditCard> cards;
+		// Depending on input file name, create a vector of validated creditcards depending on file type
+		cards = getCreditCardsCsv(inputNameCsv);
+
+		for (CreditCard card : cards)
+			card.printCard();
 	}
 }
