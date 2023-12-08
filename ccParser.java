@@ -137,24 +137,25 @@ class Main {
 	}
 
 	public static void main(String[] args) {
-		// String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
+		String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
 		// String outputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.csv";
 		String inputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.xml";
 		// String outputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.xml";
 		String inputPathJson = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.json";
 		// String outputPathJson = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.json";
 
-		// Vector<CreditCard> cardsCsv;
+		Vector<CreditCard> cardsCsv;
 		Vector<CreditCard> cardsXml;
 		Vector<CreditCard> cardsJson;
+
 		// Depending on input file name, create a vector of validated creditcards depending on file type
-		// cardsCsv = getCreditCardsCsv(inputPathCsv);
+		cardsCsv = getCreditCardsCsv(inputPathCsv);
 		cardsXml = getCreditCardsXml(inputPathXml);
 		cardsJson = getCreditCardsJson(inputPathJson);
 
-		// for (CreditCard card : cardsCsv)
-		// 	card.printCard();
-		// System.err.println();
+		for (CreditCard card : cardsCsv)
+			card.printCard();
+		System.err.println();
 		for (CreditCard card : cardsXml)
 			card.printCard();
 		System.err.println();
