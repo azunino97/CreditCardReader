@@ -7,6 +7,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 class Main {
 	// AmericanExpress (1st: 3, 2nd: 4, 7, len: 15)
@@ -47,6 +52,15 @@ class Main {
 		return cardType;
 	}
 
+	public static CreditCard createCard(String cardNumber, String cardHolderName, String cardType) {
+		// Create new subclass credit card
+		if (cardType == "MasterCard") return new MasterCard(cardNumber, cardHolderName, cardType);
+		else if (cardType == "Visa") return new Visa(cardNumber, cardHolderName, cardType);
+		else if (cardType == "AmericanExpress") return new AmericanExpress(cardNumber, cardHolderName, cardType);
+		else if (cardType == "Discover") return new Discover(cardNumber, cardHolderName, cardType);
+		return new CreditCard(cardNumber, cardHolderName, cardType);
+	}
+
 	public static Vector<CreditCard> getCreditCardsXml(String inputPathXml) {
 		Vector<CreditCard> cards = new Vector<CreditCard>();
 		try {
@@ -66,16 +80,16 @@ class Main {
 					cards.add(createCard(cardNumber, cardHolderName, cardType));
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception err) {
+			err.printStackTrace();
 		}
 		return cards;
 	}
 
-	public static Vector<CreditCard> getCreditCardsCsv(String inputCsvPath) {
+	public static Vector<CreditCard> getCreditCardsCsv(String inputPathCsv) {
 		Vector<CreditCard> cards = new Vector<CreditCard>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(inputCsvPath));
+			BufferedReader br = new BufferedReader(new FileReader(inputPathCsv));
 			// BufferedWriter bw = new BufferedWriter(new FileWriter(outputCsvPath));
 			// bw.write("cardNumber, cardType\n");
 			
@@ -96,37 +110,55 @@ class Main {
 
 			br.close();
 			// bw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception err) {
+			err.printStackTrace();
 		}
 		return cards;
 	}
 
-	public static CreditCard createCard(String cardNumber, String cardHolderName, String cardType) {
-		// Create new subclass credit card
-		if (cardType == "MasterCard") return new MasterCard(cardNumber, cardHolderName, cardType);
-		else if (cardType == "Visa") return new Visa(cardNumber, cardHolderName, cardType);
-		else if (cardType == "AmericanExpress") return new AmericanExpress(cardNumber, cardHolderName, cardType);
-		else if (cardType == "Discover") return new Discover(cardNumber, cardHolderName, cardType);
-		return new CreditCard(cardNumber, cardHolderName, cardType);
+	public static Vector<CreditCard> getCreditCardsJson(String inputPathJson) {
+		Vector<CreditCard> cards = new Vector<CreditCard>();
+		try {
+			JSONParser parser = new JSONParser();
+			JSONArray jAry = (JSONArray) parser.parse(new FileReader(inputPathJson));
+			for (Object line : jAry) {
+				JSONObject creditCard = (JSONObject) line;
+				String cardNumber = (String) creditCard.get("cardNumber");
+				String cardHolderName = (String) creditCard.get("cardHolderName");
+				String cardType = validateCard(cardNumber);
+				cards.add(createCard(cardNumber, cardHolderName, cardType));
+			}
+		} catch (ParseException err) {
+			err.printStackTrace();
+		} catch (Exception err) {
+			err.printStackTrace();
+		} 
+		return cards;
 	}
 
 	public static void main(String[] args) {
-		String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
-		// String outputNameCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.csv";
+		// String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
+		// String outputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.csv";
 		String inputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.xml";
-		// String outputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.xml";
+		// String outputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.xml";
+		String inputPathJson = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.json";
+		// String outputPathJson = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.json";
 
-		Vector<CreditCard> cardsCsv;
+		// Vector<CreditCard> cardsCsv;
 		Vector<CreditCard> cardsXml;
+		Vector<CreditCard> cardsJson;
 		// Depending on input file name, create a vector of validated creditcards depending on file type
-		cardsCsv = getCreditCardsCsv(inputPathCsv);
+		// cardsCsv = getCreditCardsCsv(inputPathCsv);
 		cardsXml = getCreditCardsXml(inputPathXml);
+		cardsJson = getCreditCardsJson(inputPathJson);
 
-		for (CreditCard card : cardsCsv)
+		// for (CreditCard card : cardsCsv)
+		// 	card.printCard();
+		// System.err.println();
+		for (CreditCard card : cardsXml)
 			card.printCard();
 		System.err.println();
-		for (CreditCard card : cardsXml)
+		for (CreditCard card : cardsJson)
 			card.printCard();
 	}
 }
