@@ -47,10 +47,10 @@ class Main {
 		return cardType;
 	}
 
-	public static Vector<CreditCard> getCreditCardsXml(String inputXmlPath, String cardNum) {
+	public static Vector<CreditCard> getCreditCardsXml(String inputPathXml) {
 		Vector<CreditCard> cards = new Vector<CreditCard>();
 		try {
-			File inputXmlFile = new File(inputXmlPath);
+			File inputXmlFile = new File(inputPathXml);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(inputXmlFile);
@@ -90,7 +90,6 @@ class Main {
 				String cardHolderName = cCard[2];
 				String cardType = validateCard(cardNumber);
 				cards.add(createCard(cardNumber, cardHolderName, cardType));
-				// cards.add(new CreditCard(cardNumber, cardHolderName, ""));
 				// Add credit card to output file
 				// bw.write(cardNumber + "," + cardType + "\n");
 			}	
@@ -105,25 +104,29 @@ class Main {
 
 	public static CreditCard createCard(String cardNumber, String cardHolderName, String cardType) {
 		// Create new subclass credit card
-		CreditCard card = new CreditCard("", "", "");
-		if (cardType == "MasterCard") card = new MasterCard(cardNumber, cardHolderName, cardType);
-		else if (cardType == "Visa") card = new Visa(cardNumber, cardHolderName, cardType);
-		else if (cardType == "AmericanExpress") card = new AmericanExpress(cardNumber, cardHolderName, cardType);
-		else if (cardType == "Discover") card = new Discover(cardNumber, cardHolderName, cardType);
-		return card;
+		if (cardType == "MasterCard") return new MasterCard(cardNumber, cardHolderName, cardType);
+		else if (cardType == "Visa") return new Visa(cardNumber, cardHolderName, cardType);
+		else if (cardType == "AmericanExpress") return new AmericanExpress(cardNumber, cardHolderName, cardType);
+		else if (cardType == "Discover") return new Discover(cardNumber, cardHolderName, cardType);
+		return new CreditCard(cardNumber, cardHolderName, cardType);
 	}
 
 	public static void main(String[] args) {
-		String inputNameCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
+		String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
 		// String outputNameCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.csv";
-		// String inputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.xml";
+		String inputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.xml";
 		// String outputXmlPath = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output.xml";
 
-		Vector<CreditCard> cards;
+		Vector<CreditCard> cardsCsv;
+		Vector<CreditCard> cardsXml;
 		// Depending on input file name, create a vector of validated creditcards depending on file type
-		cards = getCreditCardsCsv(inputNameCsv);
+		cardsCsv = getCreditCardsCsv(inputPathCsv);
+		cardsXml = getCreditCardsXml(inputPathXml);
 
-		for (CreditCard card : cards)
+		for (CreditCard card : cardsCsv)
+			card.printCard();
+		System.err.println();
+		for (CreditCard card : cardsXml)
 			card.printCard();
 	}
 }
