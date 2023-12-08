@@ -8,24 +8,23 @@
 
 // superclass
 public class CreditCard {
-      private String cardNumber;
-      private String cardHolderName;
-      private String cardType;
+    private String cardNumber;
+    private String cardHolderName;
+    private String cardType;
 
-      public CreditCard(String num, String name, String type) {
+    public CreditCard(String num, String name, String type) {
         cardNumber = num;
         cardHolderName = name;
         cardType = type;
-      }
+    }
 
-      public String getName() { return cardHolderName; }
-      public String getNumber() { return cardNumber; }
-      public String getType() { return cardType; }
+    public String getName() { return cardHolderName; }
+    public String getNumber() { return cardNumber; }
+    public String getType() { return cardType; }
 
-      public void printCard() { 
+    public void printCard() { 
         System.out.print("cardNumber," + getNumber());
         System.out.print(", cardHolderName," + getName());
         System.out.println(", cardType," + getType());
-      }
+    }
 }
-
