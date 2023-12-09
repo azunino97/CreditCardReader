@@ -28,4 +28,12 @@ public class ParserJson extends Parser {
 		} 
 		return cards;
 	}
+
+    public void writeCreditCardsJson(Vector<CreditCard> cards) {
+        try {
+
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
 }

@@ -36,4 +36,12 @@ public class ParserXml extends Parser {
         }
         return cards;
     }
+
+    public void writeCreditCardsXml(Vector<CreditCard> cards) {
+        try {
+
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
 }

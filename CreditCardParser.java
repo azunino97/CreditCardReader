@@ -44,10 +44,10 @@ public class CreditCardParser {
             parser.writeCreditCardsCsv(cards);
         } else if (fileType.equals(".xml")) {
             ParserXml parser = new ParserXml(inputFileName, outputFileName);
-            cards = parser.getCreditCardsXml();
+            parser.writeCreditCardsXml(cards);
         } else if (fileType.equals(".json")) {
             ParserJson parser = new ParserJson(inputFileName,outputFileName);
-            cards = parser.getCreditCardsJson();
+            parser.writeCreditCardsJson(cards);
         }
     }
 
