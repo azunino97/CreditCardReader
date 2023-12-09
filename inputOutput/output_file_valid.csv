@@ -1,4 +1,4 @@
-cardNumber, cardType
+cardNumber,cardType
 5567894523129089,MasterCard
 59012345678901234567890,Invalid: more than 19 digits
 4123456789123,Visa

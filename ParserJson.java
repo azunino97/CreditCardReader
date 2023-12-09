@@ -7,7 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class ParserJson extends Parser {
-    public ParserJson (String inputPathJson) { super(inputPathJson); }
+    public ParserJson (String inputPathJson, String outputPathJson) { super(inputPathJson, outputPathJson); }
     
     public Vector<CreditCard> getCreditCardsJson() {
         Vector<CreditCard> cards = new Vector<CreditCard>();

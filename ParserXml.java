@@ -10,7 +10,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class ParserXml extends Parser {
-    public ParserXml (String inputPathXml) { super(inputPathXml); }
+    public ParserXml (String inputPathXml, String outputPathXml) { super(inputPathXml, outputPathXml); }
     
     public Vector<CreditCard> getCreditCardsXml() {
         Vector<CreditCard> cards = new Vector<CreditCard>();

@@ -1,9 +1,9 @@
 // superclass
 public class Parser {
-    // private Vector<CreditCard> cards;
     public String inputPath;
+    public String outputPath;
 
-    public Parser(String inputPathName) { inputPath = inputPathName; }
+    public Parser(String inputPathName, String outputPathName) { inputPath = inputPathName; outputPath = outputPathName; }
 
     // AmericanExpress (1st: 3, 2nd: 4, 7, len: 15)
     // Visa (1st: 4, len: 13, 16)
