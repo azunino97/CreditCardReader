@@ -3,7 +3,13 @@ import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,7 +45,36 @@ public class ParserXml extends Parser {
 
     public void writeCreditCardsXml(Vector<CreditCard> cards) {
         try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
+            // root element
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("CARDS");
+            doc.appendChild(rootElement);
+
+            // add xml elements      // add cardElement to root
+            for (CreditCard card : cards) {
+                Element cardElement = doc.createElement("CARD");
+                rootElement.appendChild(cardElement);
+
+                Element name = doc.createElement("CARD_NUMBER");
+                name.setTextContent(card.getNumber());
+                cardElement.appendChild(name);
+
+                Element role = doc.createElement("CARD_TYPE");
+                role.setTextContent(card.getType());
+                cardElement.appendChild(role);
+            }
+            // for output to file, console
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // pretty print
+            
+            // write to console or file
+            DOMSource source = new DOMSource(doc);
+            StreamResult file = new StreamResult(new File(outputPath));
+            transformer.transform(source, file);
         } catch (Exception err) {
             err.printStackTrace();
         }
