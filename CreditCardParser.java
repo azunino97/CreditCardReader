@@ -17,15 +17,15 @@ public class CreditCardParser {
     }
 
     public void readInputFile() {
-        parser.readCreditCards();
+        parser.readCreditCards(); // "middleman" method, but needed because Parser is superclass of csv/xml/json subclasses
     }
 
     public void writeOutputFile() {
-        parser.writeCreditCards();
+        parser.writeCreditCards(); // "middleman" method, but needed because Parser is superclass of csv/xml/json subclasses
     }
 
     // e.g.	String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/input_file.csv";
-    private String getFileType() {
+    public String getFileType() {
         if (inputFileName == null || inputFileName == "") return "";
         return (inputFileName.substring(inputFileName.lastIndexOf('.'))).trim();
     }

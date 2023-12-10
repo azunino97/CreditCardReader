@@ -21,7 +21,7 @@ class Main {
 			
 			// update card information from input file and validate cards
 			cardParser.readInputFile();
-			cardParser.parser.printAllCards();
+			// cardParser.parser.printAllCards();
 
 			// write to output file with card info
 			cardParser.writeOutputFile();
