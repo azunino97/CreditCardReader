@@ -1,6 +1,3 @@
-import java.util.Vector;
-
-// superclass
 public class CreditCardParser {
     private String inputFileName;
     private String outputFileName;

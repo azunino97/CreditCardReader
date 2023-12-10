@@ -6,7 +6,6 @@
 * Discover (1st: 6011, len: 16)
 ***/
 
-// superclass
 public class CreditCard {
     private String cardNumber;
     private String cardHolderName;
