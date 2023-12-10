@@ -7,8 +7,8 @@ import java.util.Vector;
 public class ParserCsv extends Parser {
     public ParserCsv (String inputPathCsv, String outputPathCsv) { super(inputPathCsv, outputPathCsv); }
     
-    public Vector<CreditCard> getCreditCardsCsv() {
-        Vector<CreditCard> cards = new Vector<CreditCard>();
+    public void readCreditCards() {
+        Vector<CreditCard> tempCards = new Vector<CreditCard>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(super.inputPath));            
             String line;
@@ -19,16 +19,16 @@ public class ParserCsv extends Parser {
                 String cardNumber = cCard[0];
                 String cardHolderName = cCard[2];
                 String cardType = validateCard(cardNumber);
-                cards.add(createCard(cardNumber, cardHolderName, cardType));
+                tempCards.add(createCard(cardNumber, cardHolderName, cardType));
             }	
             br.close();
         } catch (Exception err) {
             err.printStackTrace();
         }
-        return cards;
+        cards = tempCards;
     }
 
-    public void writeCreditCardsCsv(Vector<CreditCard> cards) {
+    public void writeCreditCards() {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(super.outputPath));
             bw.write("cardNumber, cardType\n");            

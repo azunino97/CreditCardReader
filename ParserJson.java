@@ -1,4 +1,5 @@
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Vector;
 
 import org.json.simple.JSONArray;
@@ -9,8 +10,8 @@ import org.json.simple.parser.ParseException;
 public class ParserJson extends Parser {
     public ParserJson (String inputPathJson, String outputPathJson) { super(inputPathJson, outputPathJson); }
     
-    public Vector<CreditCard> getCreditCardsJson() {
-        Vector<CreditCard> cards = new Vector<CreditCard>();
+    public void readCreditCards() {
+        Vector<CreditCard> tempCards = new Vector<CreditCard>();
 		try {
 			JSONParser parser = new JSONParser();
 			JSONArray jAry = (JSONArray) parser.parse(new FileReader(super.inputPath));
@@ -19,19 +20,34 @@ public class ParserJson extends Parser {
 				String cardNumber = (String) creditCard.get("cardNumber");
 				String cardHolderName = (String) creditCard.get("cardHolderName");
 				String cardType = validateCard(cardNumber);
-				cards.add(createCard(cardNumber, cardHolderName, cardType));
+				tempCards.add(createCard(cardNumber, cardHolderName, cardType));
 			}
 		} catch (ParseException err) {
 			err.printStackTrace();
 		} catch (Exception err) {
 			err.printStackTrace();
 		} 
-		return cards;
+		cards = tempCards;
 	}
 
-    public void writeCreditCardsJson(Vector<CreditCard> cards) {
+    @SuppressWarnings("unchecked")
+    public void writeCreditCards() {
         try {
-
+            JSONArray cardList = new JSONArray();
+            for (CreditCard card : cards) {
+                // new card
+                JSONObject cardInfo = new JSONObject();
+                cardInfo.put(" cardNumber", card.getNumber());
+                cardInfo.put(" cardType", card.getType());
+                        
+                // add card to list
+                cardList.add(cardInfo);
+            }
+            // write JSON file
+            FileWriter file = new FileWriter(outputPath);
+            file.write(cardList.toJSONString()); 
+            file.flush();
+            file.close();
         } catch (Exception err) {
             err.printStackTrace();
         }

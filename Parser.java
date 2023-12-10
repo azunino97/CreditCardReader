@@ -1,9 +1,24 @@
-// superclass
+import java.util.Vector;
+
 public class Parser {
-    public String inputPath;
-    public String outputPath;
+    protected String inputPath;
+    protected String outputPath;
+    protected Vector<CreditCard> cards;
 
     public Parser(String inputPathName, String outputPathName) { inputPath = inputPathName; outputPath = outputPathName; }
+
+    public Vector<CreditCard> getCards() {
+        return cards;
+    }
+
+    public void printAllCards() {
+        for (CreditCard card : cards)
+            card.printCard();
+    }
+
+    // virtual functions to be overwritten by the different parser types
+    public void readCreditCards() {};
+    public void writeCreditCards() {};
 
     // AmericanExpress (1st: 3, 2nd: 4, 7, len: 15)
     // Visa (1st: 4, len: 13, 16)

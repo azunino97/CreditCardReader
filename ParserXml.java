@@ -9,7 +9,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,8 +17,8 @@ import org.w3c.dom.NodeList;
 public class ParserXml extends Parser {
     public ParserXml (String inputPathXml, String outputPathXml) { super(inputPathXml, outputPathXml); }
     
-    public Vector<CreditCard> getCreditCardsXml() {
-        Vector<CreditCard> cards = new Vector<CreditCard>();
+    public void readCreditCards() {
+        Vector<CreditCard> tempCards = new Vector<CreditCard>();
         try {
             File inputXmlFile = new File(super.inputPath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -34,16 +33,16 @@ public class ParserXml extends Parser {
                     String cardNumber = eElement.getElementsByTagName("CARD_NUMBER").item(0).getTextContent();
                     String cardHolderName = eElement.getElementsByTagName("CARD_HOLDER_NAME").item(0).getTextContent();
                     String cardType = validateCard(cardNumber);
-                    cards.add(createCard(cardNumber, cardHolderName, cardType));
+                    tempCards.add(createCard(cardNumber, cardHolderName, cardType));
                 }
             }
         } catch (Exception err) {
             err.printStackTrace();
         }
-        return cards;
+        cards = tempCards;
     }
 
-    public void writeCreditCardsXml(Vector<CreditCard> cards) {
+    public void writeCreditCards() {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -53,7 +52,7 @@ public class ParserXml extends Parser {
             Element rootElement = doc.createElement("CARDS");
             doc.appendChild(rootElement);
 
-            // add xml elements      // add cardElement to root
+            // add all card cardElements to rootElement
             for (CreditCard card : cards) {
                 Element cardElement = doc.createElement("CARD");
                 rootElement.appendChild(cardElement);
@@ -66,12 +65,12 @@ public class ParserXml extends Parser {
                 role.setTextContent(card.getType());
                 cardElement.appendChild(role);
             }
-            // for output to file, console
+            // output to file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // pretty print
             
-            // write to console or file
+            // write to file
             DOMSource source = new DOMSource(doc);
             StreamResult file = new StreamResult(new File(outputPath));
             transformer.transform(source, file);
