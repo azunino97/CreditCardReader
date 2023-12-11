@@ -8,20 +8,37 @@ In order to run ccParser.java, update the input file names and output file names
 + Reference TestRunner.java for running junit tests, and TestAssertions.java for the unit tests themselves.
 
 | CreditCardReader
+
 |-- ccParser.java
+
 |-- CreditCard.java
+
 |-- CreditCardParser.java
+
 |-- InputOutputPaths.java
+
 |-- Parser.java
+
 |-- ParserCsv.java
+
 |-- ParserJson.java
+
 |-- ParserXml.java
+
 |-- TestAssertions.java
+
 |-- TestRunner.java
+
 || InputOutput
+
 ||-- input_file.csv
+
 ||-- input_file.xml
+
 ||-- input_file.json
+
 ||-- output_file.csv
+
 ||-- output_file.xml
+
 ||-- output_file.json
