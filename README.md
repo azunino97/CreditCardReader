@@ -4,7 +4,8 @@ Simple CreditCard Reader that will automatically take in a file, determine the f
 
 In order to run ccParser.java, update the input file names and output file names for the types of files you want read, then run the program. The files will output to wherever the user specifies.
 
-Reference Design.pdf and CreditCardUML for design of the system.
++ Reference Design.pdf and CreditCardUML for design of the system.
++ Reference TestRunner.java for running junit tests, and TestAssertions.java for the unit tests themselves.
 
 > CreditCardReader
 >> ccParser.java
