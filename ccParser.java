@@ -10,7 +10,6 @@ class Main {
 		// String outputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output_file.xml";
 		// String outputPathJson = "/Users/q/Documents/GitHub/CreditCardReader/inputOutput/output_file.json";
 
-
 		String inputPathCsv = "/Users/q/Documents/GitHub/CreditCardReader/FinalDemo/Fall23-Section-01-Inputs/inputs/demo1_inp.csv";
 		String inputPathXml = "/Users/q/Documents/GitHub/CreditCardReader/FinalDemo/Fall23-Section-01-Inputs/inputs/demo1_inp.xml";
 		String inputPathJson = "/Users/q/Documents/GitHub/CreditCardReader/FinalDemo/Fall23-Section-01-Inputs/inputs/demo1_inp.json";
